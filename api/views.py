@@ -8,6 +8,8 @@ from django.views import generic
 
 from .models import portal
 
+import api.soql
+
 class IndexView(generic.ListView):
     """Index Page"""
     model = portal
@@ -49,3 +51,11 @@ def getData(request, resource):
         link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
+
+def getElectricVehicles():
+    query = (
+        api.soql.SoQL("gayt-taic")
+        .select(["postal_code", "agency"])
+        .filter("fuel_type", "EVC")
+    )
+    return HttpResponse(query.execute())

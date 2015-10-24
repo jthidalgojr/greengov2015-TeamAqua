@@ -24,8 +24,7 @@ class SoQL:
         return self
 
     def multiFilter(self, filters):
-        for k, v in filters.items():
-            self.filter(k, v)
+        self.params.update(filters)
         return self
 
     def select(self, columns):
