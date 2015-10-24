@@ -43,6 +43,9 @@ def getList(request):
     return HttpResponse(json.dumps(objects), content_type='application/json')
 
 def getData(request, resource):
-    link = 'https://greengov.data.ca.gov/resource/gayt-taic.json'
+    if( resource == 'gayt-taic'):
+        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
+    else:
+        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))

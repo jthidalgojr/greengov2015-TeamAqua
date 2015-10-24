@@ -8,6 +8,7 @@
     <title>Team Aqua</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
     <script language="JavaScript">
         $( document ).ready(function() {
             $('#resource-list li').remove();
@@ -46,7 +47,8 @@
     </script>
 </head>
 <body>
-
+    <div class="container">
+        <div class="row">
         <ul id="resource-list" class="well list-group">
             {% if getResource %}
                 {% for resource in list_of_resources %}
@@ -60,6 +62,33 @@
                 <li>No resources are available. (Talk to Joey about it)</li>
             {% endif %}
         </ul>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 col-md-8">
+              <sv>
+
+              </sv>
+          </div>
+          <div class="col-xs-6 col-md-4">
+              <div class="well">
+
+                  <form>
+
+                  </form>
+              </div>
+
+              <div class="well">
+
+              </div>
+
+              <div class="well">
+
+              </div>
+
+          </div>
+        </div>
         <div id="Data"></div>
+    </div>
 </body>
 </html>
