@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Aqua</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
+</head>
+<body>
+    <div id="contents" class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <svg id="map" />
+            </div>
+            <!-- Side Bar -->
+            <div class="col-md-4 well">
+                <!-- Find Hydrogen -->
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="stations_within">
+                                    Stations within
+                                </label>
+                                <input class="form-control" id="stations_within" type="text" />
+                            </div>
+                            <div class="form-group">
+
+                                <label for="miles_of">
+                                    Miles Of
+                                </label>
+                                <input class="form-control" id="miles_of" type="text" />
+                            </div>
+                            <button formaction="findHydrogenStations" class="btn btn-default" type="submit">
+                                Submit
+                            </button>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Find Nearest Electric Station -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="form-group">
+
+                                <label for="exampleInputEmail1">
+                                    Email address
+                                </label>
+                                <input class="form-control" id="exampleInputEmail1" type="email" />
+                            </div>
+                            <div class="form-group">
+
+                                <label for="exampleInputPassword1">
+                                    Password
+                                </label>
+                                <input class="form-control" id="exampleInputPassword1" type="password" />
+                            </div>
+                            <div class="form-group">
+
+                                <label for="exampleInputFile">
+                                    File input
+                                </label>
+                                <input id="exampleInputFile" type="file" />
+                                <p class="help-block">
+                                    Example block-level help text here.
+                                </p>
+                            </div>
+                            <div class="checkbox">
+
+                                <label>
+                                    <input type="checkbox" /> Check me out
+                                </label>
+                            </div>
+                            <button class="btn btn-default" type="submit">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="form-group">
+
+                                <label for="exampleInputEmail1">
+                                    Email address
+                                </label>
+                                <input class="form-control" id="exampleInputEmail1" type="email" />
+                            </div>
+                            <div class="form-group">
+
+                                <label for="exampleInputPassword1">
+                                    Password
+                                </label>
+                                <input class="form-control" id="exampleInputPassword1" type="password" />
+                            </div>
+                            <div class="form-group">
+
+                                <label for="exampleInputFile">
+                                    File input
+                                </label>
+                                <input id="exampleInputFile" type="file" />
+                                <p class="help-block">
+                                    Example block-level help text here.
+                                </p>
+                            </div>
+                            <div class="checkbox">
+
+                                <label>
+                                    <input type="checkbox" /> Check me out
+                                </label>
+                            </div>
+                            <button class="btn btn-default" type="submit">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom -->
+        <div class="row well">
+            <div class="col-md-4 ">
+                <form role="form">
+                    <div class="form-group">
+
+                        <label for="exampleInputEmail1">
+                            Email address
+                        </label>
+                        <input class="form-control" id="exampleInputEmail1" type="email" />
+                    </div>
+                    <div class="form-group">
+
+                        <label for="exampleInputPassword1">
+                            Password
+                        </label>
+                        <input class="form-control" id="exampleInputPassword1" type="password" />
+                    </div>
+                    <div class="form-group">
+
+                        <label for="exampleInputFile">
+                            File input
+                        </label>
+                        <input id="exampleInputFile" type="file" />
+                        <p class="help-block">
+                            Example block-level help text here.
+                        </p>
+                    </div>
+                    <div class="checkbox">
+
+                        <label>
+                            <input type="checkbox" /> Check me out
+                        </label>
+                    </div>
+                    <button class="btn btn-default" type="submit">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <!-- Table -->
+            <div class="col-md-8 ">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Payment Taken
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                TB - Monthly
+                            </td>
+                            <td>
+                                01/04/2012
+                            </td>
+                            <td>
+                                Default
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                TB - Monthly
+                            </td>
+                            <td>
+                                01/04/2012
+                            </td>
+                            <td>
+                                Approved
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                2
+                            </td>
+                            <td>
+                                TB - Monthly
+                            </td>
+                            <td>
+                                02/04/2012
+                            </td>
+                            <td>
+                                Declined
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                TB - Monthly
+                            </td>
+                            <td>
+                                03/04/2012
+                            </td>
+                            <td>
+                                Pending
+                            </td>
+                        </tr>
+                        <tr class="danger">
+                            <td>
+                                4
+                            </td>
+                            <td>
+                                TB - Monthly
+                            </td>
+                            <td>
+                                04/04/2012
+                            </td>
+                            <td>
+                                Call in to confirm
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

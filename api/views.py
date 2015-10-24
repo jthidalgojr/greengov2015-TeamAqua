@@ -1,6 +1,7 @@
 __author__ = 'Duy'
 import json
 import requests
+from .soql import *
 
 from django.http import HttpResponse
 
@@ -43,9 +44,27 @@ def getList(request):
     return HttpResponse(json.dumps(objects), content_type='application/json')
 
 def getData(request, resource):
-    if( resource == 'gayt-taic'):
-        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
-    else:
-        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
-    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
-    return HttpResponse(json.dumps(response.json()))
+    query = (
+        SoQL("aazw-6wcw")
+        .filter("disposed","No")
+        .multiFilter({"fuel_type": "EVC"})
+        .orderBy({"total_miles": "DESC"})
+        .select(["vin", "agency"])
+    )
+    return HttpResponse(query.execute())
+
+def getHydrogen(request):
+    query = (
+        SoQL("sfc3-nf57")
+        .filter("fuel_type_code","HY")
+        .select(["station_name", "location_1"])
+    )
+    return HttpResponse(query.execute())
+
+def getBuildingInformation(request, dept):
+    query = (
+        SoQL("24pi-kxxa")
+        .filter("department", dept)
+    )
+    return HttpResponse(query.execute())
+

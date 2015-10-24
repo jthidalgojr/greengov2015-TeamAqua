@@ -19,4 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('api.urls', namespace="api")),
+    url(r'^TeamAqua/', include('TeamAqua.urls', namespace="TeamAqua")),
+    url(r'^$', include('TeamAqua.urls', namespace="TeamAqua")),
 ]
