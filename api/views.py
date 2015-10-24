@@ -88,3 +88,21 @@ def getData(request, resource):
         link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
+
+def getVehiclesForReplacement():
+    query = (
+        api.soql.SoQL("gayt-taic")
+        .select(["vin", "agency", "postal_code"])
+        .multiFilter({
+            "weight_class": "Light Duty",
+            "payload_rating": "0",
+            "category": "GROUND"
+        })
+        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'"
+            + " AND model_year >= '2010'"
+            + " AND (total_miles IS NULL OR total_miles > 100000)"
+            #+ " AND passenger_vehicle_on_off_road_owned_leased = 'Yes, On-Road, Owned')" soda can't parse this for some reason
+            + " AND disposition_method IS NULL")
+    )
+
+    return query.execute()
