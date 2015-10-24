@@ -1,12 +1,65 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Team Aqua</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
+    <script language="JavaScript">
+        $( document ).ready(function() {
+            $('#resource-list li').remove();
+            $.getJSON('{% url 'api:getList' %}', function(data){
+                    $.each(data, function(index){
+                        var name = (data[index]['Name']);
+                        var but = document.createElement("button");
+                        but.id = data[index]['Resource'];
+                        but.className = "btn btn-link";
+                        but.innerHTML = name;
+                        but.onclick = clickData;
+                       $('#resource-list').append(
+                               $('<li/>', {
+                                   'class' : 'list-group-item',
+                                   html: but
+                               })
+                       );
+                    });
+            });
+        });
+
+        function clickData()
+        {
+            var res = this.id;
+            $.getJSON('/api/'.concat(res,'/getData'), function(data){
+                    $.each(data, function(index){
+                       $('#resource-list').append(
+                               $('<li/>', {
+                                   'class' : 'list-group-item',
+                                   html: data[index]['license_plate_number']
+                               })
+                       );
+                    });
+            });
+        }
+    </script>
 </head>
 <body>
 
+        <ul id="resource-list" class="well list-group">
+            {% if getResource %}
+                {% for resource in list_of_resources %}
+                    <li class="list-group-item">
+                        <button id='{{ resource.Resource }}'
+                                value="{{ resource.Link }}"
+                                >{{ resource.Name }}</button>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>No resources are available. (Talk to Joey about it)</li>
+            {% endif %}
+        </ul>
+        <div id="Data"></div>
 </body>
 </html>

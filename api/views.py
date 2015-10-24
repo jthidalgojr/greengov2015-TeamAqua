@@ -1,19 +1,48 @@
 __author__ = 'Duy'
 import json
+import requests
+
 from django.http import HttpResponse
 
 from django.views import generic
 
-class IndexView(generic.ListVIew):
+from .models import portal
+
+class IndexView(generic.ListView):
     """Index Page"""
+    model = portal
+    context_object_name = 'list_of_resources'
     template_name = 'api/index.html'
+    objects = [
+            {
+                'Name': 'Alternative-Fuel-Station-Locations',
+                'link': 'https://greengov.data.ca.gov/resource/sfc3-nf57.json',
+                'Resource':'sfc3-nf57',
+            },
+            {
+                'Name': 'CA-State-Fleet-2011-2014',
+                'link': 'https://greengov.data.ca.gov/resource/gayt-taic.json',
+                'Resource':'gayt-taic',
+            }
+        ]
+    def getResource(self):
+        return self.objects
+
 
 def getList(request):
-    objects = [dict(file=f) for f in os.listdir('polls/dump/')]
-
+    objects = [{
+                'Name': 'Alternative-Fuel-Station-Locations',
+                'link': 'https://greengov.data.ca.gov/resource/sfc3-nf57.json',
+                'Resource':'sfc3-nf57',
+            },
+            {
+                'Name': 'CA-State-Fleet-2011-2014',
+                'link': 'https://greengov.data.ca.gov/resource/gayt-taic.json',
+                'Resource':'gayt-taic',
+            }]
     return HttpResponse(json.dumps(objects), content_type='application/json')
 
 def getData(request, resource):
-    f = open('polls/dump/{0}.json'.format(resource), 'r')
-    data = json.loads(f.read())
-    return HttpResponse(json.dumps(data))
+    link = 'https://greengov.data.ca.gov/resource/gayt-taic.json'
+    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
+    return HttpResponse(json.dumps(response.json()))
