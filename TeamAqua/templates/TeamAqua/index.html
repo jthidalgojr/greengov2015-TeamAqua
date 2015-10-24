@@ -15,27 +15,29 @@
                 <svg id="map" />
             </div>
             <!-- Side Bar -->
-            <div class="col-md-4 well">
+            <div class="col-md-4">
                 <!-- Find Hydrogen -->
-                <div class="row">
+                <div class="row well">
                     <div class="col-md-12">
-
+                        <h4>Find Hydrogen Stations</h4>
+                        <hr/>
                         <form role="form">
-                            <div class="form-group">
+                            <div class="form-group inline-group">
                                 <label for="stations_within">
                                     Stations within
                                 </label>
                                 <input class="form-control" id="stations_within" type="text" />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group inline-group">
 
                                 <label for="miles_of">
                                     Miles Of
                                 </label>
                                 <input class="form-control" id="miles_of" type="text" />
                             </div>
+                            <br/>
                             <button formaction="findHydrogenStations" class="btn btn-default" type="submit">
-                                Submit
+                                Search
                             </button>
                         </form>
                         <div class="row">
@@ -47,80 +49,49 @@
                     </div>
                 </div>
                 <!-- Find Nearest Electric Station -->
-                <div class="row">
+                <div class="row well">
+                    <h4>Find Nearest Electric Station</h4>
+                    <hr/>
                     <div class="col-md-12">
                         <form role="form">
-                            <div class="form-group">
-
-                                <label for="exampleInputEmail1">
-                                    Email address
+                            <div class="form-group inline-group">
+                                <label for="electric_stations_for">
+                                    Electric Stations For:
                                 </label>
-                                <input class="form-control" id="exampleInputEmail1" type="email" />
-                            </div>
-                            <div class="form-group">
-
-                                <label for="exampleInputPassword1">
-                                    Password
-                                </label>
-                                <input class="form-control" id="exampleInputPassword1" type="password" />
-                            </div>
-                            <div class="form-group">
-
-                                <label for="exampleInputFile">
-                                    File input
-                                </label>
-                                <input id="exampleInputFile" type="file" />
-                                <p class="help-block">
-                                    Example block-level help text here.
-                                </p>
-                            </div>
-                            <div class="checkbox">
-
-                                <label>
-                                    <input type="checkbox" /> Check me out
-                                </label>
+                                <select id="electric_stations_for" class="form-control">
+                                    <option value="one">One</option>
+                                    <option value="two">Two</option>
+                                    <option value="three">Three</option>
+                                    <option value="four">Four</option>
+                                    <option value="five">Five</option>
+                                </select>
                             </div>
                             <button class="btn btn-default" type="submit">
-                                Submit
+                                Search
                             </button>
                         </form>
                     </div>
                 </div>
-                <div class="row">
+                <!-- Agency nearest Hydrogen Station -->
+                <div class="row well">
+                    <h4>Agency Nearest Hydrogen Station</h4>
+                    <hr/>
                     <div class="col-md-12">
                         <form role="form">
-                            <div class="form-group">
-
-                                <label for="exampleInputEmail1">
-                                    Email address
+                            <div class="form-group inline-group">
+                                <label for="electric_stations_for">
+                                    Nearest Hydrogen Stations For:
                                 </label>
-                                <input class="form-control" id="exampleInputEmail1" type="email" />
-                            </div>
-                            <div class="form-group">
-
-                                <label for="exampleInputPassword1">
-                                    Password
-                                </label>
-                                <input class="form-control" id="exampleInputPassword1" type="password" />
-                            </div>
-                            <div class="form-group">
-
-                                <label for="exampleInputFile">
-                                    File input
-                                </label>
-                                <input id="exampleInputFile" type="file" />
-                                <p class="help-block">
-                                    Example block-level help text here.
-                                </p>
-                            </div>
-                            <div class="checkbox">
-
-                                <label>
-                                    <input type="checkbox" /> Check me out
-                                </label>
+                                <select id="electric_stations_for" class="form-control">
+                                    <option value="one">One</option>
+                                    <option value="two">Two</option>
+                                    <option value="three">Three</option>
+                                    <option value="four">Four</option>
+                                    <option value="five">Five</option>
+                                </select>
                             </div>
                             <button class="btn btn-default" type="submit">
-                                Submit
+                                Search
                             </button>
                         </form>
                     </div>
@@ -128,38 +99,36 @@
             </div>
         </div>
         <!-- Bottom -->
+        <h3>Recommend Replacement Vehicle</h3>
         <div class="row well">
             <div class="col-md-4 ">
                 <form role="form">
-                    <div class="form-group">
+                    <div class="form-group inline-group">
 
-                        <label for="exampleInputEmail1">
-                            Email address
+                        <label for="agency">
+                            Agency
                         </label>
-                        <input class="form-control" id="exampleInputEmail1" type="email" />
+                        <select id="agency" class="form-control">
+                            <option>ABC</option>
+                            <option>XYZ</option>
+                        </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group inline-group">
 
-                        <label for="exampleInputPassword1">
-                            Password
+                        <label for="total_milage">
+                            Total Mileage:
                         </label>
-                        <input class="form-control" id="exampleInputPassword1" type="password" />
+                        <input class="form-control" id="total_milage" type="NUMBER" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group inline-group">
 
-                        <label for="exampleInputFile">
-                            File input
+                        <label for="fuel_type">
+                            Fuel Type:
                         </label>
-                        <input id="exampleInputFile" type="file" />
-                        <p class="help-block">
-                            Example block-level help text here.
-                        </p>
-                    </div>
-                    <div class="checkbox">
-
-                        <label>
-                            <input type="checkbox" /> Check me out
-                        </label>
+                        <select id="fuel_type" class="form-control">
+                            <option>ABC</option>
+                            <option>XYZ</option>
+                        </select>
                     </div>
                     <button class="btn btn-default" type="submit">
                         Submit
@@ -171,90 +140,42 @@
                 <table class="table table-condensed table-hover">
                     <thead>
                         <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Product
-                            </th>
-                            <th>
-                                Payment Taken
-                            </th>
-                            <th>
-                                Status
-                            </th>
+                            <th>Zip Code</th>
+                            <th>Agency</th>
+                            <th>Vehicle ID</th>
+                            <th>Recommendation</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Default
-                            </td>
+                            <td>1</td>
+                            <td>TB - Monthly</td>
+                            <td>01/04/2012</td>
+                            <td>Default</td>
                         </tr>
                         <tr class="active">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Approved
-                            </td>
+                            <td>1</td>
+                            <td>TB - Monthly</td>
+                            <td>01/04/2012</td>
+                            <td>Approved</td>
                         </tr>
                         <tr class="success">
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                02/04/2012
-                            </td>
-                            <td>
-                                Declined
-                            </td>
+                            <td>2</td>
+                            <td>TB - Monthly</td>
+                            <td>02/04/2012</td>
+                            <td>Declined</td>
                         </tr>
                         <tr class="warning">
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                03/04/2012
-                            </td>
-                            <td>
-                                Pending
-                            </td>
+                            <td>3</td>
+                            <td>TB - Monthly</td>
+                            <td>03/04/2012</td>
+                            <td>Pending</td>
                         </tr>
                         <tr class="danger">
-                            <td>
-                                4
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                04/04/2012
-                            </td>
-                            <td>
-                                Call in to confirm
-                            </td>
+                            <td>4</td>
+                            <td>TB - Monthly</td>
+                            <td>04/04/2012</td>
+                            <td>Call in to confirm</td>
                         </tr>
                     </tbody>
                 </table>
