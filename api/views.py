@@ -107,3 +107,8 @@ def getData(request, resource):
         link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
+
+def hydrogenNearAgency(request, agency):
+    objects= []
+    return HttpResponse(objects)
+    #return
