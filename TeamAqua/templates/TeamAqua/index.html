@@ -24,7 +24,7 @@
                 zip = 838378;
             }
             $.getJSON('{% url 'api:findHydrogenStations' %}', {"range":range,"zip":zip}, function(data){
-                $(canvas).remove();
+                $("canvas").remove();
                 $('#chart').append('label').html(data['fuel_type']);
             });
         }
@@ -58,7 +58,7 @@
                                 <input class="form-control" id="zip" type="text" />
                             </div>
                             <br/>
-                            <button onclick="findHydrogenStationsButton()" class="btn btn-default" type="submit">
+                            <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default" type="submit">
                                 Search
                             </button>
                         </form>
