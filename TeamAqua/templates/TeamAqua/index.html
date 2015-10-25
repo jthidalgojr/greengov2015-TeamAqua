@@ -94,19 +94,17 @@
                         <div class="panel-body">
                         <div id="collapseFindHydrogen" aria-expanded="false" data-parent="#accordion" class="panel-collapse in">
                             <div class="panel-group">
-                                <label for="stations_within">
-                                    Stations within
-                                </label>
+                                <div class="input-group-addon" style="width:30%">Stations within</div>
                                 <input class="form-control" id="stations_within" type="text" value="50"/>
                             </div>
                             <div class="panel-group">
-                                <label for="zip">
+                                <label class="input-group-addon" for="zip">
                                     Miles Of
                                 </label>
-                                <input class="form-control" id="zip" type="text" value="95835"/>
+                                <input class="form-control" id="zip" type="text" value="95835" pattern="^([0-9]{5})$"/>
                             </div>
                             <div class="panel-footer">
-                                <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default " type="submit">
+                                <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default center" type="submit">
                                     Search
                                 </button>
                             </div>
@@ -126,7 +124,7 @@
                         </div>
                         <div id="collapseHydrogen" aria-expanded="false" class="panel-collapse in">
                             <div class="panel-body">
-                                <label for="electric_stations_for">
+                                <label class="input-group-addon" for="electric_stations_for">
                                     Electric Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
@@ -181,12 +179,12 @@
             </div>
         </div>
         <!-- Bottom -->
-        <h3>Recommend Replacement Vehicle</h3>
-        <div class="row well">
-            <div class="col-md-4 ">
-                    <div class="form-group inline-group">
 
-                        <label for="agency">
+        <div class="row well">
+            <div class="col-md-4" style="border: 1px solid silver">
+                    <div class="form-group inline-group">
+                        <h4>Recommend Replacement Vehicle</h4>
+                        <label class="input-group-addon" for="agency">
                             Agency
                         </label>
                         <select id="agency" class="form-control">
@@ -199,7 +197,7 @@
                     </div>
                     <div class="form-group inline-group">
 
-                        <label for="total_milage">
+                        <label class="input-group-addon" for="total_milage">
                             Total Mileage:
                         </label>
                         <input class="form-control" id="total_milage" type="NUMBER" value="100000"/>
@@ -207,7 +205,7 @@
                     </div>
                     <div class="form-group inline-group">
 
-                        <label for="fuel_type">
+                        <label class="input-group-addon" for="fuel_type">
                             Fuel Type:
                         </label>
                         <select id="fuel_type" class="form-control">
@@ -218,7 +216,7 @@
                             {% endif %}
                         </select>
                     </div>
-                    <button class="btn btn-default" onclick="showRecommendations();return false;" type="submit">
+                    <button class="btn btn-default" onclick="showRecommendations();return false;" type="submit" style="margin-bottom: 10px;">
                         Show Recommendations
                     </button>
             </div>
