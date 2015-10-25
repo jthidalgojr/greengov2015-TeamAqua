@@ -40,7 +40,6 @@ def getList(request):
             }]
     return HttpResponse(json.dumps(objects), content_type='application/json')
 
-
 def getHydrogen(request):
     query = (
         api.soql.SoQL("sfc3-nf57")
@@ -64,6 +63,10 @@ def getElectricVehicles():
         .filter("fuel_type", "EVC")
     )
     return HttpResponse(query.execute())
+
+def findVehiclesForReplacement(request):
+    jsonString = getVehiclesForReplacement(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
+    return HttpResponse(jsonString)
 
 def getVehiclesForReplacement(agency, total_miles, fuel_type):
     query = (

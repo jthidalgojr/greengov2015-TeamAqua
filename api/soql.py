@@ -46,12 +46,16 @@ class SoQL:
         self.params["$order"] = ",".join(columnsFormatted)
         return self
 
+    def groupBy(self, columns):
+        self.params["$group"] = ",".join(columns)
+        return self
+
     def limit(self, lim):
         self.params["$limit"] = str(lim)
         return self
 
-    def groupBy(self, columns):
-        self.params["$group"] = ",".join(columns)
+    def offset(self, page):
+        self.params["$offset"] = str(page);
         return self
 
 
