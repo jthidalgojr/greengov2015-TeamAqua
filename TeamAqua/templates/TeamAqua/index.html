@@ -57,18 +57,19 @@
 
         function agencyNearestHydrogenStation()
         {
+            var a = $('#electric_stations_for').val();
 
         }
     </script>
 </head>
 <body>
-    <div id="contents" class="container-fluid">
+    <div id="contents" class="container center-block" style="max-width: 1600px; padding-top: 1%;">
         <div class="row">
-            <div id="map" class="col-md-8" style="position:relative; height: 800px;">
+            <div id="map" class="col-md-8 well" style="padding: 5px;position:relative; height: 800px;border:1px solid silver;">
                <!-- <div id="map"></div>-->
             </div>
             <!-- Side Bar -->
-            <div class="col-md-4 well">
+            <div class="col-md-4 well" style="height:800px;">
                 <!-- Find Hydrogen -->
                 <div class="row">
                     <div class="col-md-12 panel panel-default">
@@ -80,7 +81,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                        <div id="collapseFindHydrogen" class="panel-collapse">
+                        <div id="collapseFindHydrogen" aria-expanded="false" data-parent="#accordion" class="panel-collapse in">
                             <div class="panel-group">
                                 <label for="stations_within">
                                     Stations within
@@ -112,7 +113,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div id="collapseHydrogen" class="panel-collapse">
+                        <div id="collapseHydrogen" aria-expanded="false" class="panel-collapse in">
                             <div class="panel-body">
                                 <label for="electric_stations_for">
                                     Electric Stations For:
@@ -146,7 +147,7 @@
                                     </a>
                                 </div>
                             </div>
-                        <div id="collapseAgencyHydrogen" class="panel-collapse in">
+                        <div id="collapseAgencyHydrogen" aria-expanded="false" class="panel-collapse in">
                             <div class="panel-body">
                                 <label for="electric_stations_for">
                                     Nearest Hydrogen Stations For:
