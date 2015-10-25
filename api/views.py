@@ -56,6 +56,7 @@ def getBuildingInformation(request, dept):
     )
     return HttpResponse(query.execute())
 
+#what is this for?
 def getElectricVehicles():
     query = (
         api.soql.SoQL("gayt-taic")
@@ -72,8 +73,6 @@ def getVehiclesForReplacement(agency, total_miles, fuel_type):
             "weight_class": "Light Duty",
             "payload_rating": "0",
             "category": "GROUND",
-            "agency": agency,
-            "fuel_type": fuel_type
         })
         .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
         .And("model_year >= '2010'")
@@ -86,7 +85,7 @@ def getVehiclesForReplacement(agency, total_miles, fuel_type):
         query.filter("fuel_type", fuel_type)
     try:
         temp = int(total_miles)
-        query.And("total_miles > {0}".format(temp))
+        query.And("total_miles >= {0}".format(temp))
     except:
         pass
 
