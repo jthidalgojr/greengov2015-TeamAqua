@@ -1,4 +1,18 @@
+from urllib import request
+
 __author__ = 'James'
+
+import json
+import requests
+
+from django.http import HttpResponse
+
+from django.views import generic
+
+from .models import portal
+import api.soql
+
+
 
 import urllib.parse
 import http.client
@@ -58,7 +72,6 @@ class SoQL:
         self.params["$offset"] = str(page);
         return self
 
-
 def test():
     query = (
         SoQL("aazw-6wcw")
@@ -69,3 +82,6 @@ def test():
     )
     print(query._buildRequest())
     print(query.execute())
+
+
+

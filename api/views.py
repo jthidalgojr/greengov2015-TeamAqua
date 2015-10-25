@@ -68,31 +68,27 @@ def findVehiclesForReplacement(request):
     jsonString = getVehiclesForReplacement(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
     return HttpResponse(jsonString)
 
-def getVehiclesForReplacement(agency, total_miles, fuel_type):
+def showRecommendations(request):
+    agency = request.GET['agency']
+    total_milage = request.GET['total_milage']
+    fuel_type = request.GET['fuel_type']
+
     query = (
         api.soql.SoQL("gayt-taic")
         .select(["vin", "agency", "postal_code"])
         .multiFilter({
+            "agency": agency,
             "weight_class": "Light Duty",
             "payload_rating": "0",
             "category": "GROUND",
+            "fuel_type": fuel_type
         })
         .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
         .And("model_year >= '2010'")
-        .And("passenger_vehicle_on_off_road_owned_leased like '%On-Road%'")
+            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
         .And("disposition_method IS NULL")
     )
-    if agency != "":
-        query.filter("agency", agency)
-    if fuel_type != "":
-        query.filter("fuel_type", fuel_type)
-    try:
-        temp = int(total_miles)
-        query.And("total_miles >= {0}".format(temp))
-    except:
-        pass
-
-    return query.execute()
+    return HttpResponse(query.execute(), content_type="application/json")
 
 def findHydrogenStations(request):
     range = request.GET['range']
@@ -107,6 +103,11 @@ def getData(request, resource):
         link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
+
+def hydrogenNearAgency(request, agency):
+    objects= []
+    return HttpResponse(objects)
+    #return
 
 def getHydrogenStationsByDepartment(department_name):
     buildingStr = (
