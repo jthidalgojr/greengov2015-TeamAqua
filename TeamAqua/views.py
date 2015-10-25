@@ -10,13 +10,24 @@ from api.soql import *
 
 def indexView(request):
     context = {
-            "vehicleAgencies": getUniqueValues("gayt-taic", "agency", "max(postal_code)"),
-            "vehicleFuelTypes": getUniqueValues("gayt-taic", "fuel_type", "max(postal_code)")
+            "vehicleAgencies": getUniqueValuesWithAggregate("gayt-taic", "agency", "max(postal_code)"),
+            "vehicleFuelTypes": getUniqueValues("gayt-taic", "fuel_type"),
+            "buildingAgencies": getUniqueValues("24pi-kxxa", "department_name")
         }
     return render(request,'TeamAqua/index.html', context=context)
 
+def getUniqueValues(resource, column):
+    query = (
+        api.soql.SoQL(resource)
+        .select([column])
+        .groupBy([column])
+        .orderBy({column: "ASC"})
+    )
 
-def getUniqueValues(resource, column, aggregate):
+    jsonString = query.execute()
+    return json.loads(jsonString)
+
+def getUniqueValuesWithAggregate(resource, column, aggregate):
     query = (
         api.soql.SoQL(resource)
         .select([column, aggregate])

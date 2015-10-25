@@ -12,8 +12,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//d85wutc1n854v.cloudfront.net/live/js/behavior.js"></script>
     <!-- Load Leaflet from CDN-->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.css" />
+    <link rel="stylesheet" id="coToolbarStyle" href="chrome-extension://cjabmdjcfcfdmffimndhafhblfmpjdpe/toolbar/styles/placeholder.css" type="text/css">
     <script src="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.js"></script>
 
     <!-- Load Esri Leaflet from CDN -->
@@ -38,13 +40,18 @@
                 fuel_type = 'GAS';
             }
             $.getJSON('{% url 'api:showRecommendations' %}', {"agency": agency,"total_milage": total_milage,"fuel_type": fuel_type}, function(data){
-                //$(canvas).remove();
-                console.log(data);
-                $("#showRecTable tr").remove();
-                $.each(data, function(i, item) {
-                    $('#showRecTable').append('<tr><td>' + data[i]['agency'] + '</td><td>' + data[i]['postal_code'] +
-                            '</td><td>' + data[i]['vin'] + '</td></tr>');
-                })
+                if(data.length > 0)
+                {
+                    $("#showRecTable tr").remove();
+                    $.each(data, function (i, item) {
+                        $('#showRecTable').append('<tr><td>' + data[i]['agency'] + '</td><td>' + data[i]['postal_code'] +
+                                '</td><td>' + data[i]['vin'] + '</td></tr>');
+                    })
+                }
+                else
+                {
+                    $('#showRecTable').append('<tr><td>There are no rows to show</td><td>');
+                }
 
             });
 
@@ -77,6 +84,10 @@
                             <div class="panel-title">
                                 <a data-toggle="collapse" href="#collapseFindHydrogen">
                                     Find Hydrogen Stations
+                                </a>
+                                <a href="#" title="Expand/Collapse" class="btn-borderless btn-toggle-expand">
+                                    <i class="fa fa-chevron-up">
+                                    </i>
                                 </a>
                             </div>
                         </div>
@@ -152,11 +163,11 @@
                                 <label for="electric_stations_for">
                                     Nearest Hydrogen Stations For:
                                 </label>
-                                <select id="electric_stations_for" class="form-control">
+                                <select id="buildingAgencies" class="form-control">
                                     <option value=""/>
-                                    {% if vehicleAgencies %}
-                                        {% for item in vehicleAgencies %}
-                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
+                                    {% if buildingAgencies %}
+                                        {% for item in buildingAgencies %}
+                                    <option value="{{ item.department_name }}">{{ item.department_name }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -175,14 +186,12 @@
         <h3>Recommend Replacement Vehicle</h3>
         <div class="row well">
             <div class="col-md-4 ">
-                <form role="form">
                     <div class="form-group inline-group">
 
                         <label for="agency">
                             Agency
                         </label>
                         <select id="agency" class="form-control">
-                            <option value=""/>
                             {% if vehicleAgencies %}
                                 {% for item in vehicleAgencies %}
                             <option value="{{ item.agency }}">{{ item.agency }}</option>
@@ -204,10 +213,9 @@
                             Fuel Type:
                         </label>
                         <select id="fuel_type" class="form-control">
-                            <option value=""/>
                             {% if vehicleFuelTypes %}
-                                {% for type in vehicleFuelTypes %}
-                            <option value="{{ type }}">{{ type }}</option>
+                                {% for item in vehicleFuelTypes %}
+                            <option value="{{ item.fuel_type }}">{{ item.fuel_type }}</option>
                                 {% endfor %}
                             {% endif %}
                         </select>
@@ -215,7 +223,6 @@
                     <button class="btn btn-default" onclick="showRecommendations();return false;" type="submit">
                         Show Recommendations
                     </button>
-                </form>
             </div>
             <!-- Table -->
             <div class="col-md-8 ">

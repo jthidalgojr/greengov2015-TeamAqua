@@ -83,9 +83,9 @@ def showRecommendations(request):
             "category": "GROUND",
             "fuel_type": fuel_type
         })
-        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
-        .And("model_year >= '2010'")
-            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
+        .where("acquisition_delivery_date <= '2010-01-01T00:00:00'")
+        .And("model_year <= '2010'")
+        .And("total_miles IS NULL OR total_miles > " + total_milage)
         .And("disposition_method IS NULL")
     )
     return HttpResponse(query.execute(), content_type="application/json")
@@ -108,3 +108,16 @@ def hydrogenNearAgency(request, agency):
     objects= []
     return HttpResponse(objects)
     #return
+
+def getHydrogenStationsByDepartment(department_name):
+    buildingStr = (
+        api.soql.SoQL("24pi-kxxa")
+        .filter("department_name", department_name)
+        .select("location")
+        .execute()
+    )
+
+    buildings = json.loads(buildingStr)
+    coordinateList = [(building["location"]["latitude"],building["location"]["longitude"])
+                      for building in buildings]
+
