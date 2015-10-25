@@ -75,23 +75,28 @@ def getData(request, resource):
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
 
-def getVehiclesForReplacement():
+def showRecommendations(request):
+    agency = request.GET['agency']
+    total_milage = request.GET['total_milage']
+    fuel_type = request.GET['fuel_type']
     query = (
         api.soql.SoQL("gayt-taic")
         .select(["vin", "agency", "postal_code"])
         .multiFilter({
+            "agency": agency,
             "weight_class": "Light Duty",
             "payload_rating": "0",
-            "category": "GROUND"
+            "category": "GROUND",
+            "fuel_type": fuel_type
         })
         .where("acquisition_delivery_date >= '2010-01-01T00:00:00'"
             + " AND model_year >= '2010'"
-            + " AND (total_miles IS NULL OR total_miles > 100000)"
+            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
             #+ " AND passenger_vehicle_on_off_road_owned_leased = 'Yes, On-Road, Owned')" soda can't parse this for some reason
             + " AND disposition_method IS NULL")
     )
+    return HttpResponse(query.execute(), content_type="application/json")
 
-    return query.execute()
 
 def findHydrogenStations(request):
     range = request.GET['range']
