@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.views import generic
 
 from .models import portal
+import api.soql
 
 class IndexView(generic.ListView):
     """Index Page"""
@@ -45,7 +46,7 @@ def getList(request):
 
 def getHydrogen(request):
     query = (
-        SoQL("sfc3-nf57")
+        api.soql.SoQL("sfc3-nf57")
         .filter("fuel_type_code","HY")
         .select(["station_name", "location_1"])
     )
@@ -53,22 +54,7 @@ def getHydrogen(request):
 
 def getBuildingInformation(request, dept):
     query = (
-        SoQL("24pi-kxxa")
-        .filter("department", dept)
-    )
-    return HttpResponse(query.execute())
-
-def getHydrogen(request):
-    query = (
-        SoQL("sfc3-nf57")
-        .filter("fuel_type_code","HY")
-        .select(["station_name", "location_1"])
-    )
-    return HttpResponse(query.execute())
-
-def getBuildingInformation(request, dept):
-    query = (
-        SoQL("24pi-kxxa")
+        api.soql.SoQL("24pi-kxxa")
         .filter("department", dept)
     )
     return HttpResponse(query.execute())
@@ -106,3 +92,9 @@ def getVehiclesForReplacement():
     )
 
     return query.execute()
+
+def findHydrogenStations(request):
+    range = request.GET['range']
+    zip = request.GET['zip']
+    objects = getHydrogen(request)
+    return HttpResponse(objects, content_type="application/json")

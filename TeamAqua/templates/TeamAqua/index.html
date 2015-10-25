@@ -7,12 +7,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
+    <script>
+        $(document).ready(function(){
+
+                }
+        )
+
+        function findHydrogenStationsButton()
+        {
+            var range = $('#stations_within').val();
+            var zip = $('#zip').val();
+            if (range == null){
+                range = 50;
+            }
+            if (zip == null){
+                zip = 838378;
+            }
+            $.getJSON('{% url 'api:findHydrogenStations' %}', {"range":range,"zip":zip}, function(data){
+                $(canvas).remove();
+                $('#chart').append('label').html(data['fuel_type']);
+            });
+        }
+    </script>
 </head>
 <body>
     <div id="contents" class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
-                <svg id="map" />
+            <div id="chart" class="col-md-8">
+                <canvas id="map"></canvas>
             </div>
             <!-- Side Bar -->
             <div class="col-md-4">
@@ -30,13 +52,13 @@
                             </div>
                             <div class="form-group inline-group">
 
-                                <label for="miles_of">
+                                <label for="zip">
                                     Miles Of
                                 </label>
-                                <input class="form-control" id="miles_of" type="text" />
+                                <input class="form-control" id="zip" type="text" />
                             </div>
                             <br/>
-                            <button formaction="findHydrogenStations" class="btn btn-default" type="submit">
+                            <button onclick="findHydrogenStationsButton()" class="btn btn-default" type="submit">
                                 Search
                             </button>
                         </form>
@@ -131,7 +153,7 @@
                         </select>
                     </div>
                     <button class="btn btn-default" type="submit">
-                        Submit
+                        Show Recommendations
                     </button>
                 </form>
             </div>
