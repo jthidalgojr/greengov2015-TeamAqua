@@ -1,12 +1,10 @@
 __author__ = 'Duy'
 import json
 import requests
-
 from django.http import HttpResponse
-
 from django.views import generic
-
 from .models import portal
+import api.soql
 
 class IndexView(generic.ListView):
     """Index Page"""
@@ -45,7 +43,7 @@ def getList(request):
 
 def getHydrogen(request):
     query = (
-        SoQL("sfc3-nf57")
+        api.soql.SoQL("sfc3-nf57")
         .filter("fuel_type_code","HY")
         .select(["station_name", "location_1"])
     )
@@ -53,7 +51,7 @@ def getHydrogen(request):
 
 def getBuildingInformation(request, dept):
     query = (
-        SoQL("24pi-kxxa")
+        api.soql.SoQL("24pi-kxxa")
         .filter("department", dept)
     )
     return HttpResponse(query.execute())
@@ -66,21 +64,31 @@ def getElectricVehicles():
     )
     return HttpResponse(query.execute())
 
-def getVehiclesForReplacement():
+def getVehiclesForReplacement(agency, total_miles, fuel_type):
     query = (
         api.soql.SoQL("gayt-taic")
         .select(["vin", "agency", "postal_code"])
         .multiFilter({
             "weight_class": "Light Duty",
             "payload_rating": "0",
-            "category": "GROUND"
+            "category": "GROUND",
+            "agency": agency,
+            "fuel_type": fuel_type
         })
-        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'"
-            + " AND model_year >= '2010'"
-            + " AND (total_miles IS NULL OR total_miles > 100000)"
-            #+ " AND passenger_vehicle_on_off_road_owned_leased = 'Yes, On-Road, Owned')" soda can't parse this for some reason
-            + " AND disposition_method IS NULL")
+        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
+        .And("model_year >= '2010'")
+        .And("passenger_vehicle_on_off_road_owned_leased like '%On-Road%'")
+        .And("disposition_method IS NULL")
     )
+    if agency != "":
+        query.filter("agency", agency)
+    if fuel_type != "":
+        query.filter("fuel_type", fuel_type)
+    try:
+        temp = int(total_miles)
+        query.And("total_miles > {0}".format(temp))
+    except:
+        pass
 
     return query.execute()
 

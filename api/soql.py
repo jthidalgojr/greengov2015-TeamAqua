@@ -35,6 +35,11 @@ class SoQL:
         self.params["$where"] = condition
         return self
 
+    #"and" is reserved
+    def And(self, condition):
+        self.params["$where"] += " AND " + condition
+        return self
+
     #e.g. {"total_miles": "DESC"}
     def orderBy(self, columns):
         columnsFormatted = [k+" "+v for k, v in columns.items()]

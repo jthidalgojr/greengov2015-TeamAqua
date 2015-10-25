@@ -109,6 +109,7 @@
                             Agency
                         </label>
                         <select id="agency" class="form-control">
+                            <option value=""/>
                             {% if vehicleAgencies %}
                                 {% for agency in vehicleAgencies %}
                             <option value="{{ agency }}">{{ agency }}</option>
@@ -129,6 +130,7 @@
                             Fuel Type:
                         </label>
                         <select id="fuel_type" class="form-control">
+                            <option value=""/>
                             {% if vehicleFuelTypes %}
                                 {% for type in vehicleFuelTypes %}
                             <option value="{{ type }}">{{ type }}</option>
