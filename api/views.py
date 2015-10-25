@@ -83,9 +83,9 @@ def showRecommendations(request):
             "category": "GROUND",
             "fuel_type": fuel_type
         })
-        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
-        .And("model_year >= '2010'")
-            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
+        .where("acquisition_delivery_date <= '2010-01-01T00:00:00'")
+        .And("model_year <= '2010'")
+        .And("total_miles IS NULL OR total_miles > " + total_milage)
         .And("disposition_method IS NULL")
     )
     return HttpResponse(query.execute(), content_type="application/json")
