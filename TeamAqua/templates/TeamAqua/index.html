@@ -100,8 +100,8 @@
                                 <select id="electric_stations_for" class="form-control">
                                     <option value=""/>
                                     {% if vehicleAgencies %}
-                                        {% for agency in vehicleAgencies %}
-                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% for item in vehicleAgencies %}
+                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -134,8 +134,8 @@
                                 <select id="electric_stations_for" class="form-control">
                                     <option value=""/>
                                     {% if vehicleAgencies %}
-                                        {% for agency in vehicleAgencies %}
-                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% for item in vehicleAgencies %}
+                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -163,8 +163,8 @@
                         <select id="agency" class="form-control">
                             <option value=""/>
                             {% if vehicleAgencies %}
-                                {% for agency in vehicleAgencies %}
-                            <option value="{{ agency }}">{{ agency }}</option>
+                                {% for item in vehicleAgencies %}
+                            <option value="{{ item.agency }}">{{ item.agency }}</option>
                                 {% endfor %}
                             {% endif %}
                         </select>

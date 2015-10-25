@@ -10,21 +10,20 @@ from api.soql import *
 
 def indexView(request):
     context = {
-            "vehicleAgencies": getUniqueValues("gayt-taic", "agency"),
-            "vehicleFuelTypes": getUniqueValues("gayt-taic", "fuel_type")
+            "vehicleAgencies": getUniqueValues("gayt-taic", "agency", "max(postal_code)"),
+            "vehicleFuelTypes": getUniqueValues("gayt-taic", "fuel_type", "max(postal_code)")
         }
     return render(request,'TeamAqua/index.html', context=context)
 
 
-def getUniqueValues(resource, column):
+def getUniqueValues(resource, column, aggregate):
     query = (
         api.soql.SoQL(resource)
-        .select([column])
+        .select([column, aggregate])
         .groupBy([column])
         .orderBy({column: "ASC"})
     )
 
     jsonString = query.execute()
-    jsonDicts = json.loads(jsonString)
-    return [jsonDict[column] for jsonDict in jsonDicts]
+    return json.loads(jsonString)
 
