@@ -23,26 +23,32 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
     <script>
-        $(document).ready(function(){
-                    $('#map').height = 800;
-                }
-        )
-
-        function findHydrogenStationsButton()
+        function showRecommendations()
         {
-            var range = $('#stations_within').val();
-            var zip = $('#zip').val();
-            if (range == null){
-                range = 50;
+            var agency = $('#agency').val();
+            var total_milage = $('#total_milage').val();
+            var fuel_type = $('#fuel_type').val();
+            if (agency == null || agency.trim() == ''){
+                agency = 50;
             }
-            if (zip == null){
-                zip = 838378;
+            if (total_milage == null || total_milage.trim() == ''){
+                total_milage = 100000;
             }
-            $.getJSON('{% url 'api:findHydrogenStations' %}', {"range":range,"zip":zip}, function(data){
-                $("canvas").remove();
-                $('#chart').append('label').html(data['fuel_type']);
+            if (fuel_type == null || fuel_type.trim() == ''){
+                fuel_type = 'GAS';
+            }
+            $.getJSON('{% url 'api:showRecommendations' %}', {"agency": agency,"total_milage": total_milage,"fuel_type": fuel_type}, function(data){
+                //$(canvas).remove();
+                console.log(data);
+                $("#showRecTable tr").remove();
+                $.each(data, function(i, item) {
+                    $('#showRecTable').append('<tr><td>' + data[i]['agency'] + '</td><td>' + data[i]['postal_code'] +
+                            '</td><td>' + data[i]['vin'] + '</td></tr>');
+                })
+
             });
-        }
+
+         }
 
         function findNearestElectricButton()
         {
@@ -189,6 +195,7 @@
                             Total Mileage:
                         </label>
                         <input class="form-control" id="total_milage" type="NUMBER" value="100000"/>
+
                     </div>
                     <div class="form-group inline-group">
 
@@ -204,7 +211,7 @@
                             {% endif %}
                         </select>
                     </div>
-                    <button class="btn btn-default" type="submit" onclick="searchVehicles(this,0); return false;">
+                    <button class="btn btn-default" onclick="showRecommendations();return false;" type="submit">
                         Show Recommendations
                     </button>
                 </form>
@@ -214,42 +221,13 @@
                 <table class="table table-condensed table-hover">
                     <thead>
                         <tr>
-                            <th>Zip Code</th>
                             <th>Agency</th>
+                            <th>Zip Code</th>
                             <th>Vehicle ID</th>
-                            <th>Recommendation</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="showRecTable">
                         <tr>
-                            <td>1</td>
-                            <td>TB - Monthly</td>
-                            <td>01/04/2012</td>
-                            <td>Default</td>
-                        </tr>
-                        <tr class="active">
-                            <td>1</td>
-                            <td>TB - Monthly</td>
-                            <td>01/04/2012</td>
-                            <td>Approved</td>
-                        </tr>
-                        <tr class="success">
-                            <td>2</td>
-                            <td>TB - Monthly</td>
-                            <td>02/04/2012</td>
-                            <td>Declined</td>
-                        </tr>
-                        <tr class="warning">
-                            <td>3</td>
-                            <td>TB - Monthly</td>
-                            <td>03/04/2012</td>
-                            <td>Pending</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>4</td>
-                            <td>TB - Monthly</td>
-                            <td>04/04/2012</td>
-                            <td>Call in to confirm</td>
                         </tr>
                     </tbody>
                 </table>

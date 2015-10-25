@@ -68,21 +68,26 @@ def findVehiclesForReplacement(request):
     jsonString = getVehiclesForReplacement(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
     return HttpResponse(jsonString)
 
-def getVehiclesForReplacement(agency, total_miles, fuel_type):
+def showRecommendations(request):
+    agency = request.GET['agency']
+    total_milage = request.GET['total_milage']
+    fuel_type = request.GET['fuel_type']
     query = (
         api.soql.SoQL("gayt-taic")
         .select(["vin", "agency", "postal_code"])
         .multiFilter({
+            "agency": agency,
             "weight_class": "Light Duty",
             "payload_rating": "0",
             "category": "GROUND",
+            "fuel_type": fuel_type
         })
         .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
         .And("model_year >= '2010'")
-        .And("passenger_vehicle_on_off_road_owned_leased like '%On-Road%'")
+            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
         .And("disposition_method IS NULL")
     )
-    if agency != "":
+    return HttpResponse(query.execute(), content_type="application/json")
         query.filter("agency", agency)
     if fuel_type != "":
         query.filter("fuel_type", fuel_type)
@@ -92,7 +97,6 @@ def getVehiclesForReplacement(agency, total_miles, fuel_type):
     except:
         pass
 
-    return query.execute()
 
 def findHydrogenStations(request):
     range = request.GET['range']
