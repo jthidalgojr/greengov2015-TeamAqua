@@ -72,6 +72,7 @@ def showRecommendations(request):
     agency = request.GET['agency']
     total_milage = request.GET['total_milage']
     fuel_type = request.GET['fuel_type']
+
     query = (
         api.soql.SoQL("gayt-taic")
         .select(["vin", "agency", "postal_code"])
@@ -88,15 +89,6 @@ def showRecommendations(request):
         .And("disposition_method IS NULL")
     )
     return HttpResponse(query.execute(), content_type="application/json")
-        query.filter("agency", agency)
-    if fuel_type != "":
-        query.filter("fuel_type", fuel_type)
-    try:
-        temp = int(total_miles)
-        query.And("total_miles >= {0}".format(temp))
-    except:
-        pass
-
 
 def findHydrogenStations(request):
     range = request.GET['range']
