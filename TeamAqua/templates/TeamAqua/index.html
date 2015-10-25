@@ -19,10 +19,37 @@
     <!-- Load Esri Leaflet from CDN -->
     <script src="//cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
 
+    <!-- Geo Code Leaflet -->
+    <script src="//cdn.jsdelivr.net/leaflet.esri.geocoder/1.0.2/esri-leaflet-geocoder.js"></script>
 
 
     <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
     <script>
+        $(document).ready(function(){
+                    // Add event listeners
+                    //Adds event listener for the Find Hydrogen Stations button.  Will call the geoCoding function to
+                    //receive latitude and longitude coordinates.
+                document.getElementById("findHYButton").addEventListener("click", geoCode, false);
+                }
+        )
+
+        function geoCode()
+        {
+            var address = document.getElementById("zip").value;
+
+
+            console.log(address);
+            document.getElementsByClassName("geocoder-control-input leaflet-bar")[0].value = address;
+            console.log(document.getElementsByClassName("geocoder-control-input leaflet-bar")[0].value);
+
+            var e = jQuery.Event("click");
+            e.which = 13; // #Enter key code value
+            e.keyCode = 13;
+           $(".geocoder-control-input.leaflet-bar").focus();
+
+
+        };
+
         function showRecommendations()
         {
             var agency = $('#agency').val();
@@ -94,7 +121,7 @@
                                 <input class="form-control" id="zip" type="text" value="95835"/>
                             </div>
                             <div class="panel-footer">
-                                <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default " type="submit">
+                                <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default " id="findHYButton" type="submit">
                                     Search
                                 </button>
                             </div>
@@ -247,6 +274,16 @@
         where: 'State=\'CA\' and Fuel_Type_Code=\'HY\'',
         minZoom: 5
     }).addTo(map);
+
+    var searchControl = L.esri.Geocoding.Controls.geosearch().addTo(map);
+    var results = L.layerGroup().addTo(map);
+
+    searchControl.on('results', function(data){
+    results.clearLayers();
+    for (var i = data.results.length - 1; i >= 0; i--) {
+      results.addLayer(L.marker(data.results[i].latlng));
+    }
+  });
 
 </script>
 </body>
