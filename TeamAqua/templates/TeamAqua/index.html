@@ -109,8 +109,11 @@
                             Agency
                         </label>
                         <select id="agency" class="form-control">
-                            <option>ABC</option>
-                            <option>XYZ</option>
+                            {% if vehicleAgencies %}
+                                {% for agency in vehicleAgencies %}
+                            <option value="{{ agency }}">{{ agency }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <div class="form-group inline-group">
@@ -126,8 +129,11 @@
                             Fuel Type:
                         </label>
                         <select id="fuel_type" class="form-control">
-                            <option>ABC</option>
-                            <option>XYZ</option>
+                            {% if vehicleFuelTypes %}
+                                {% for type in vehicleFuelTypes %}
+                            <option value="{{ type }}">{{ type }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <button class="btn btn-default" type="submit">

@@ -58,21 +58,6 @@ def getBuildingInformation(request, dept):
     )
     return HttpResponse(query.execute())
 
-def getHydrogen(request):
-    query = (
-        SoQL("sfc3-nf57")
-        .filter("fuel_type_code","HY")
-        .select(["station_name", "location_1"])
-    )
-    return HttpResponse(query.execute())
-
-def getBuildingInformation(request, dept):
-    query = (
-        SoQL("24pi-kxxa")
-        .filter("department", dept)
-    )
-    return HttpResponse(query.execute())
-
 def getElectricVehicles():
     query = (
         api.soql.SoQL("gayt-taic")
@@ -80,14 +65,6 @@ def getElectricVehicles():
         .filter("fuel_type", "EVC")
     )
     return HttpResponse(query.execute())
-
-def getData(request, resource):
-    if( resource == 'gayt-taic'):
-        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
-    else:
-        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
-    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
-    return HttpResponse(json.dumps(response.json()))
 
 def getVehiclesForReplacement():
     query = (
@@ -106,3 +83,11 @@ def getVehiclesForReplacement():
     )
 
     return query.execute()
+
+def getData(request, resource):
+    if( resource == 'gayt-taic'):
+        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
+    else:
+        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
+    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
+    return HttpResponse(json.dumps(response.json()))

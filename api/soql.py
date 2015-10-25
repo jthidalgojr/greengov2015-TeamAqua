@@ -47,6 +47,7 @@ class SoQL:
 
     def groupBy(self, columns):
         self.params["$group"] = ",".join(columns)
+        return self
 
 
 def test():
