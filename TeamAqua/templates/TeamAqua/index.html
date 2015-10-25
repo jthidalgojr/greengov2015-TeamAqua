@@ -64,8 +64,11 @@
 
         function agencyNearestHydrogenStation()
         {
-            var a = $('#electric_stations_for').val();
+            var a = $('#buildingAgencies').val();
 
+            $.getJSON('{% url 'api:searchHydrogenByDep' %}', {"department_name": a}, function(data){
+                #add to map somehow
+            });
         }
     </script>
 </head>

@@ -65,7 +65,7 @@ def getElectricVehicles():
     return HttpResponse(query.execute())
 
 def findVehiclesForReplacement(request):
-    jsonString = getVehiclesForReplacement(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
+    jsonString = showRecommendations(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
     return HttpResponse(jsonString)
 
 def showRecommendations(request):
@@ -83,9 +83,9 @@ def showRecommendations(request):
             "category": "GROUND",
             "fuel_type": fuel_type
         })
-        .where("acquisition_delivery_date <= '2010-01-01T00:00:00'")
-        .And("model_year <= '2010'")
-        .And("total_miles IS NULL OR total_miles > " + total_milage)
+        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
+        .And("model_year >= '2010'")
+            + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
         .And("disposition_method IS NULL")
     )
     return HttpResponse(query.execute(), content_type="application/json")
@@ -95,7 +95,7 @@ def findHydrogenStations(request):
     zip = request.GET['zip']
     objects = getHydrogen(request)
     return HttpResponse(objects, content_type="application/json")
-    
+
 def getData(request, resource):
     if( resource == 'gayt-taic'):
         link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
@@ -109,15 +109,45 @@ def hydrogenNearAgency(request, agency):
     return HttpResponse(objects)
     #return
 
+def searchHydrogenByDep(request):
+    department = request.GET["department_name"]
+    return HttpResponse(json.dumps(getHydrogenStationsByDepartment(department)))
+
 def getHydrogenStationsByDepartment(department_name):
     buildingStr = (
         api.soql.SoQL("24pi-kxxa")
         .filter("department_name", department_name)
-        .select("location")
+        .where("location.latitude<1000")
+        .And("location.longitude<1000")
+        .select(["location.latitude","location.longitude"])
+    ).execute()
+
+    buildings = json.loads(buildingStr)
+    coordinateList = [(float(building["sub_col_location_latitude"]),float(building["sub_col_location_longitude"]))
+                      for building in buildings]
+
+    kmPerLong = 111.32*0.766044443
+    kmPerLat = 110.574
+    milesPerKm = 1.6
+    limitInMiles = 30.0
+    squareCoordLimit = (limitInMiles/milesPerKm/kmPerLat)*(limitInMiles/milesPerKm/kmPerLong)
+
+    allStations = json.loads(
+        api.soql.SoQL("sfc3-nf57")
+        .filter("fuel_type_code", "HY")
+        .where("location_1.latitude<1000")
+        .And("location_1.longitude<1000")
         .execute()
     )
 
-    buildings = json.loads(buildingStr)
-    coordinateList = [(building["location"]["latitude"],building["location"]["longitude"])
-                      for building in buildings]
+    return list(filter(lambda station: isCloseEnough(station, coordinateList, squareCoordLimit), allStations))
 
+def isCloseEnough(station, coordinateList, dist):
+    for coordinates in coordinateList:
+        if (
+            (float(station["location_1"]["latitude"])-coordinates[0])*(float(station["location_1"]["latitude"])-coordinates[0])+
+            (float(station["location_1"]["longitude"])-coordinates[1])*(float(station["location_1"]["longitude"])-coordinates[1])
+            < dist
+        ):
+            return True
+    return False
