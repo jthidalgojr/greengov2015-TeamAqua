@@ -130,7 +130,6 @@
                                     Electric Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
-                                    <option value=""/>
                                     {% if vehicleAgencies %}
                                         {% for item in vehicleAgencies %}
                                     <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
@@ -164,7 +163,6 @@
                                     Nearest Hydrogen Stations For:
                                 </label>
                                 <select id="buildingAgencies" class="form-control">
-                                    <option value=""/>
                                     {% if buildingAgencies %}
                                         {% for item in buildingAgencies %}
                                     <option value="{{ item.department_name }}">{{ item.department_name }}</option>
