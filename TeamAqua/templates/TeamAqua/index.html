@@ -2,11 +2,25 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
+    <style>
+        html { height: 100%}
+        body {height:100%}
+        #map{height: 100%}
+    </style>
     <meta charset="UTF-8">
     <title>Team Aqua</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- Load Leaflet from CDN-->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.css" />
+    <script src="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.js"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="//cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
+
+
+
     <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
     <script>
         function showRecommendations()
@@ -50,8 +64,8 @@
 <body>
     <div id="contents" class="container-fluid">
         <div class="row">
-            <div id="chart" class="col-md-8">
-                <canvas id="map"></canvas>
+            <div id="map" class="col-md-8" style="position:relative; height: 400px;">
+               <!-- <div id="map"></div>-->
             </div>
             <!-- Side Bar -->
             <div class="col-md-4 well">
@@ -106,8 +120,8 @@
                                 <select id="electric_stations_for" class="form-control">
                                     <option value=""/>
                                     {% if vehicleAgencies %}
-                                        {% for agency in vehicleAgencies %}
-                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% for item in vehicleAgencies %}
+                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -140,8 +154,8 @@
                                 <select id="electric_stations_for" class="form-control">
                                     <option value=""/>
                                     {% if vehicleAgencies %}
-                                        {% for agency in vehicleAgencies %}
-                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% for item in vehicleAgencies %}
+                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -169,8 +183,8 @@
                         <select id="agency" class="form-control">
                             <option value=""/>
                             {% if vehicleAgencies %}
-                                {% for agency in vehicleAgencies %}
-                            <option value="{{ agency }}">{{ agency }}</option>
+                                {% for item in vehicleAgencies %}
+                            <option value="{{ item.agency }}">{{ item.agency }}</option>
                                 {% endfor %}
                             {% endif %}
                         </select>
@@ -220,5 +234,17 @@
             </div>
         </div>
     </div>
+
+<script>
+    var map = L.map('map').setView([37.78, -92.85], 4);
+
+    //Set the Basemap Layer for the feature
+    L.esri.basemapLayer('Streets').addTo(map);
+
+    //Add a feature layer to the map
+    var fuelStations = L.esri.featureLayer({
+        url: 'https://services.gis.ca.gov/arcgis/rest/services/Transportation/AltFuelStations/MapServer/0'
+    }).addTo(map);
+</script>
 </body>
 </html>
