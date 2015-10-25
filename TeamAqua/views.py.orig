@@ -9,6 +9,7 @@ from api.soql import *
 # Create your views here.
 
 def indexView(request):
+<<<<<<< HEAD
     context = {
             "vehicleAgencies": getUniqueValues("gayt-taic", "agency"),
             "vehicleFuelTypes": getUniqueValues("gayt-taic", "fuel_type")
@@ -28,3 +29,6 @@ def getUniqueValues(resource, column):
     jsonDicts = json.loads(jsonString)
     return [jsonDict[column] for jsonDict in jsonDicts]
 
+=======
+    return render(request,'TeamAqua/index.html' )
+>>>>>>> Duy
