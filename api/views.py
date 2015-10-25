@@ -107,3 +107,16 @@ def getData(request, resource):
         link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
     response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
     return HttpResponse(json.dumps(response.json()))
+
+def getHydrogenStationsByDepartment(department_name):
+    buildingStr = (
+        api.soql.SoQL("24pi-kxxa")
+        .filter("department_name", department_name)
+        .select("location")
+        .execute()
+    )
+
+    buildings = json.loads(buildingStr)
+    coordinateList = [(building["location"]["latitude"],building["location"]["longitude"])
+                      for building in buildings]
+

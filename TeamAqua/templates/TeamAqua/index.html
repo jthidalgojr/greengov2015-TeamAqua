@@ -145,11 +145,11 @@
                                 <label for="electric_stations_for">
                                     Nearest Hydrogen Stations For:
                                 </label>
-                                <select id="electric_stations_for" class="form-control">
+                                <select id="buildingAgencies" class="form-control">
                                     <option value=""/>
-                                    {% if vehicleAgencies %}
-                                        {% for item in vehicleAgencies %}
-                                    <option value="{{ item.max_postal_code }}">{{ item.agency }}</option>
+                                    {% if buildingAgencies %}
+                                        {% for item in buildingAgencies %}
+                                    <option value="{{ item.department_name }}">{{ item.department_name }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -198,8 +198,8 @@
                         <select id="fuel_type" class="form-control">
                             <option value=""/>
                             {% if vehicleFuelTypes %}
-                                {% for type in vehicleFuelTypes %}
-                            <option value="{{ type }}">{{ type }}</option>
+                                {% for item in vehicleFuelTypes %}
+                            <option value="{{ item.fuel_type }}">{{ item.fuel_type }}</option>
                                 {% endfor %}
                             {% endif %}
                         </select>
@@ -264,9 +264,11 @@
     L.esri.basemapLayer('Streets').addTo(map);
 
     //Add a feature layer to the map
+    /*
     var fuelStations = L.esri.featureLayer({
         url: 'https://services.gis.ca.gov/arcgis/rest/services/Transportation/AltFuelStations/MapServer/0'
     }).addTo(map);
+    */
 </script>
 </body>
 </html>
