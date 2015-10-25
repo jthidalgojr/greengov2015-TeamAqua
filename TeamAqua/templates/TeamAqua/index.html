@@ -81,11 +81,12 @@
                                     Electric Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
-                                    <option value="five">Five</option>
+                                    <option value=""/>
+                                    {% if vehicleAgencies %}
+                                        {% for agency in vehicleAgencies %}
+                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                             <button class="btn btn-default" type="submit">
@@ -105,11 +106,12 @@
                                     Nearest Hydrogen Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
-                                    <option value="five">Five</option>
+                                    <option value=""/>
+                                    {% if vehicleAgencies %}
+                                        {% for agency in vehicleAgencies %}
+                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                             <button class="btn btn-default" type="submit">
