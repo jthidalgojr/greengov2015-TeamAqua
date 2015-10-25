@@ -1,11 +1,8 @@
 __author__ = 'Duy'
 import json
 import requests
-
 from django.http import HttpResponse
-
 from django.views import generic
-
 from .models import portal
 import api.soql
 
@@ -43,7 +40,6 @@ def getList(request):
             }]
     return HttpResponse(json.dumps(objects), content_type='application/json')
 
-
 def getHydrogen(request):
     query = (
         api.soql.SoQL("sfc3-nf57")
@@ -59,6 +55,7 @@ def getBuildingInformation(request, dept):
     )
     return HttpResponse(query.execute())
 
+#what is this for?
 def getElectricVehicles():
     query = (
         api.soql.SoQL("gayt-taic")
@@ -67,13 +64,9 @@ def getElectricVehicles():
     )
     return HttpResponse(query.execute())
 
-def getData(request, resource):
-    if( resource == 'gayt-taic'):
-        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
-    else:
-        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
-    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
-    return HttpResponse(json.dumps(response.json()))
+def findVehiclesForReplacement(request):
+    jsonString = getVehiclesForReplacement(request.GET["agency"], request.GET["total_miles"], request.GET["fuel_type"])
+    return HttpResponse(jsonString)
 
 def showRecommendations(request):
     agency = request.GET['agency']
@@ -89,13 +82,20 @@ def showRecommendations(request):
             "category": "GROUND",
             "fuel_type": fuel_type
         })
-        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'"
-            + " AND model_year >= '2010'"
+        .where("acquisition_delivery_date >= '2010-01-01T00:00:00'")
+        .And("model_year >= '2010'")
             + " AND (total_miles IS NULL OR total_miles > " + total_milage + ")"
-            #+ " AND passenger_vehicle_on_off_road_owned_leased = 'Yes, On-Road, Owned')" soda can't parse this for some reason
-            + " AND disposition_method IS NULL")
+        .And("disposition_method IS NULL")
     )
     return HttpResponse(query.execute(), content_type="application/json")
+        query.filter("agency", agency)
+    if fuel_type != "":
+        query.filter("fuel_type", fuel_type)
+    try:
+        temp = int(total_miles)
+        query.And("total_miles >= {0}".format(temp))
+    except:
+        pass
 
 
 def findHydrogenStations(request):
@@ -103,3 +103,11 @@ def findHydrogenStations(request):
     zip = request.GET['zip']
     objects = getHydrogen(request)
     return HttpResponse(objects, content_type="application/json")
+    
+def getData(request, resource):
+    if( resource == 'gayt-taic'):
+        link = 'https://greengov.data.ca.gov/resource/gayt-taic.json?weight_class=Light%20Duty&fuel_type=gas'
+    else:
+        link = 'https://greengov.data.ca.gov/resource/{0}.json?'.format(resource)
+    response = requests.get(link, headers={'X-App-Token': 'eZ54Yp2ubYQAEO2IvzxR7pPQu'})
+    return HttpResponse(json.dumps(response.json()))

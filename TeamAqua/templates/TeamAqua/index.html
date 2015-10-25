@@ -6,6 +6,7 @@
     <title>Team Aqua</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'api/bootstrap.min.css' %}"/>
     <script>
         function showRecommendations()
@@ -34,6 +35,16 @@
             });
 
          }
+
+        function findNearestElectricButton()
+        {
+
+        }
+
+        function agencyNearestHydrogenStation()
+        {
+
+        }
     </script>
 </head>
 <body>
@@ -43,85 +54,104 @@
                 <canvas id="map"></canvas>
             </div>
             <!-- Side Bar -->
-            <div class="col-md-4">
+            <div class="col-md-4 well">
                 <!-- Find Hydrogen -->
-                <div class="row well">
-                    <div class="col-md-12">
-                        <h4>Find Hydrogen Stations</h4>
-                        <hr/>
-
-                            <div class="form-group inline-group">
+                <div class="row">
+                    <div class="col-md-12 panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a data-toggle="collapse" href="#collapseFindHydrogen">
+                                    Find Hydrogen Stations
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                        <div id="collapseFindHydrogen" class="panel-collapse">
+                            <div class="panel-group">
                                 <label for="stations_within">
                                     Stations within
                                 </label>
-                                <input class="form-control" id="stations_within" type="text" />
+                                <input class="form-control" id="stations_within" type="text" value="50"/>
                             </div>
-                            <div class="form-group inline-group">
-
+                            <div class="panel-group">
                                 <label for="zip">
                                     Miles Of
                                 </label>
-                                <input class="form-control" id="zip" type="text" />
+                                <input class="form-control" id="zip" type="text" value="95835"/>
                             </div>
-                            <br/>
-                            <button onclick="findHydrogenStationsButton()" class="btn btn-default" type="submit">
-                                Search
-                            </button>
-
-                        <div class="row">
-                            <div class="col-md-4">
+                            <div class="panel-footer">
+                                <button onclick="findHydrogenStationsButton(); return false;" class="btn btn-default " type="submit">
+                                    Search
+                                </button>
                             </div>
-                            <div class="col-md-8">
-                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
                 <!-- Find Nearest Electric Station -->
-                <div class="row well">
-                    <h4>Find Nearest Electric Station</h4>
-                    <hr/>
-                    <div class="col-md-12">
-                        <form role="form">
-                            <div class="form-group inline-group">
+                <div class="row">
+                    <div class="col-md-12 panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a data-toggle="collapse" href="#collapseHydrogen">
+                                    Find Nearest Electric Station
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseHydrogen" class="panel-collapse">
+                            <div class="panel-body">
                                 <label for="electric_stations_for">
                                     Electric Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
-                                    <option value="five">Five</option>
+                                    <option value=""/>
+                                    {% if vehicleAgencies %}
+                                        {% for agency in vehicleAgencies %}
+                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
-                            <button class="btn btn-default" type="submit">
-                                Search
-                            </button>
-                        </form>
+                            <div class="panel-footer">
+                                <button onclick="findNearestElectricButton(); return false;" class="btn btn-default" type="submit">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Agency nearest Hydrogen Station -->
-                <div class="row well">
-                    <h4>Agency Nearest Hydrogen Station</h4>
-                    <hr/>
-                    <div class="col-md-12">
-                        <form role="form">
-                            <div class="form-group inline-group">
+                <div class="row">
+
+                    <div class="col-md-12 panel panel-default">
+
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a data-toggle="collapse" href="#collapseAgencyHydrogen">
+                                        Closest Hydrogen Station to Agency
+                                    </a>
+                                </div>
+                            </div>
+                        <div id="collapseAgencyHydrogen" class="panel-collapse in">
+                            <div class="panel-body">
                                 <label for="electric_stations_for">
                                     Nearest Hydrogen Stations For:
                                 </label>
                                 <select id="electric_stations_for" class="form-control">
-                                    <option value="one">One</option>
-                                    <option value="two">Two</option>
-                                    <option value="three">Three</option>
-                                    <option value="four">Four</option>
-                                    <option value="five">Five</option>
+                                    <option value=""/>
+                                    {% if vehicleAgencies %}
+                                        {% for agency in vehicleAgencies %}
+                                    <option value="{{ agency }}">{{ agency }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
-                            <button class="btn btn-default" type="submit">
-                                Search
-                            </button>
-                        </form>
+                            <div class="panel-footer">
+                                <button onclick="agencyNearestHydrogenStation(); return false;" class="btn btn-default" type="submit">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,9 +167,12 @@
                             Agency
                         </label>
                         <select id="agency" class="form-control">
-                            <option>Fish and Wildlife, Department of</option>
-                            <option>Corrections and Rehabilitation, Department of</option>
-                            <option>General Services, Department of</option>
+                            <option value=""/>
+                            {% if vehicleAgencies %}
+                                {% for agency in vehicleAgencies %}
+                            <option value="{{ agency }}">{{ agency }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <div class="form-group inline-group">
@@ -147,7 +180,7 @@
                         <label for="total_milage">
                             Total Mileage:
                         </label>
-                        <input class="form-control" id="total_milage" type="NUMBER" value="100000" />
+                        <input class="form-control" id="total_milage" type="NUMBER" value="100000"/>
 
                     </div>
                     <div class="form-group inline-group">
@@ -156,8 +189,12 @@
                             Fuel Type:
                         </label>
                         <select id="fuel_type" class="form-control">
-                            <option>GAS</option>
-                            <option>EVC</option>
+                            <option value=""/>
+                            {% if vehicleFuelTypes %}
+                                {% for type in vehicleFuelTypes %}
+                            <option value="{{ type }}">{{ type }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <button class="btn btn-default" onclick="showRecommendations();return false;" type="submit">

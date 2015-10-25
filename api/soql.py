@@ -49,18 +49,28 @@ class SoQL:
         self.params["$where"] = condition
         return self
 
+    #"and" is reserved
+    def And(self, condition):
+        self.params["$where"] += " AND " + condition
+        return self
+
     #e.g. {"total_miles": "DESC"}
     def orderBy(self, columns):
         columnsFormatted = [k+" "+v for k, v in columns.items()]
         self.params["$order"] = ",".join(columnsFormatted)
         return self
 
+    def groupBy(self, columns):
+        self.params["$group"] = ",".join(columns)
+        return self
+
     def limit(self, lim):
         self.params["$limit"] = str(lim)
         return self
 
-    def groupBy(self, columns):
-        self.params["$group"] = ",".join(columns)
+    def offset(self, page):
+        self.params["$offset"] = str(page);
+        return self
 
 def test():
     query = (
